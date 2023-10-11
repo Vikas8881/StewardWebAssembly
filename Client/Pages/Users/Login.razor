@@ -1,0 +1,114 @@
+﻿@layout LoginLayout
+@page "/"
+@using Model.DTO;
+@inject AuthenticationStateProvider authenticateProvider
+
+@inject IauthenticationService AuthService
+@inject ILocalStorageService localStorage
+@inject NavigationManager navManager
+
+<div class="hold-transition login-page">
+       <video autoplay muted loop id="myVideo">
+  <source src="hospital.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+	
+	<div class="login-box">
+  <!-- /.login-logo -->
+ 
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <span class="h1"><b>Steward</b> Health+</span>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+
+                <EditForm Model="user" OnValidSubmit="HandleLogin" class="signin-form">
+						  	<DataAnnotationsValidator></DataAnnotationsValidator>
+		                    <ValidationSummary/>
+        <div class="input-group mb-3">
+         <InputText class="form-control" @bind-Value=user.Email type=Email Placeholder="Username"></InputText>
+
+                        <ValidationMessage For="@(()=>user.Email)" />
+                        <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+                        <InputText class="form-control" type="Password" @bind-Value=user.Password id="password-field" Placeholder="Password"></InputText>
+          <ValidationMessage For=@(()=>user.Password)></ValidationMessage>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        
+          <!-- /.col -->
+          <div class="col-12">
+            <button type="submit" class="submit btn-block">Sign In</button>
+          </div>
+          <!-- /.col -->
+        </div>
+      </EditForm>
+
+      <div class="social-auth-links text-center mt-2 mb-3">
+      
+      </div>
+      <!-- /.social-auth-links -->
+
+    
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+</div>
+
+
+@code {
+    private string errorMessage = string.Empty;
+    private string returnUrl = string.Empty;
+    private LoginUserDto user = new LoginUserDto();
+    private RegistrationDTO registrationDTO = new RegistrationDTO();
+    protected override void OnInitialized()
+    {
+        var uri = navManager.ToAbsoluteUri(navManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var url))
+        {
+            returnUrl = url;
+        }
+    }
+    private async Task HandleLogin()
+    {
+
+        var result = await AuthService.Login(user);
+        if (result.Success)
+        {
+            errorMessage = string.Empty;
+            await localStorage.SetItemAsync("authToken", result.Data);
+            await authenticateProvider.GetAuthenticationStateAsync();
+            navManager.NavigateTo("/dashboard");
+            // if(returnUrl==null)
+            // {
+                
+            // }
+            // else
+            // {
+            //     navManager.NavigateTo(returnUrl);
+            // }
+           
+
+        }
+        else
+        {
+            errorMessage = result.Message;
+        }
+    }
+
+}

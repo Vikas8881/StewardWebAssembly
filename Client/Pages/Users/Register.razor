@@ -1,0 +1,48 @@
+﻿@page "/users/register"
+@inject NavigationManager navManager
+
+<h3>Register New Account</h3>
+
+
+<div class="card-body">
+@* 	<EditForm Model="Model" OnValidSubmit=HandelRegistratioon>
+		<DataAnnotationsValidator></DataAnnotationsValidator>
+		<ValidationSummary/>
+	<div class=mb-3 row>
+		<label for=email>Email Address</label>
+		<InputText class="form-control" @bind-Value=Model.Email type=Email></InputText>
+		<ValidationMessage For=@(()=>Model.Email)></ValidationMessage>
+	</div>
+		<div class=mb-3 row>
+		<label for=firstname>First Name</label>
+		<InputText class="form-control" @bind-Value=Model.FirstName></InputText>
+		<ValidationMessage For=@(()=>Model.FirstName)></ValidationMessage>
+	</div>
+		<div class=mb-3 row>
+		<label for=lastname>Last Name</label>
+		<InputText class="form-control" @bind-Value=Model.LastName></InputText>
+		<ValidationMessage For=@(()=>Model.LastName)></ValidationMessage>
+	</div>
+		<div class=mb-3 row>
+		<label for=password>Password</label>
+		<InputText class="form-control" type="password" @bind-Value=Model.Password></InputText>
+		<ValidationMessage For=@(()=>Model.Password)></ValidationMessage>
+	</div>
+
+	<button type="submit" class="btn btn-primary">Register</button>
+	</EditForm> *@
+</div>
+
+
+
+@code {
+	
+	private async Task HandelRegistratioon()
+	{
+	
+	}
+	private void NavigateToLogin()
+	{
+		navManager.NavigateTo("/users/login");
+	}
+}

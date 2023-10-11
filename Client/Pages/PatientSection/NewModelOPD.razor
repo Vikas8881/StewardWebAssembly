@@ -1,0 +1,113 @@
+﻿@page "/Patient/opdModal"
+@using Client.Service.DoctorRepo;
+@using Client.Service.PatientRepo;
+@using Model.DTO;
+@inject iDoctorRepo dService
+@inject IPatient pService
+
+@inject NavigationManager navManger
+@inject IJSRuntime JS
+
+
+<SfToast @ref="ToastObj" ID="toast_type">
+    <ToastPosition X="@ToastPosition"></ToastPosition>
+</SfToast>
+<ContentMain>
+    <EditForm Model="patientModel">
+     <DataAnnotationsValidator></DataAnnotationsValidator>
+     <ValidationSummary></ValidationSummary>
+     <div class="model-content">
+         <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Patient Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+         </div>
+         <div class="modal-body">
+             <section>
+                 <div class="container-fluid">
+                     <div class="row">
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                 <span>Patient Name</span>
+                                    <InputText class="form-control" @bind-Value="patientModel.Name" Placeholder="Patient Name"/>
+                                    <ValidationMessage For=@(()=>patientModel.Name)></ValidationMessage>
+                          </div>
+                         </div> 
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient Phone</span>
+                                    <InputText data-mask="0000000000" class="form-control" @bind-Value="patientModel.Phone" Placeholder="Patient Phone"/>
+                                    <ValidationMessage For=@(()=>patientModel.Phone)></ValidationMessage>
+                          </div>
+                         </div>  
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient Address</span>
+                                    <InputText class="form-control" @bind-Value="patientModel.Address" Placeholder="Patient Address" />
+                                    <ValidationMessage For=@(()=>patientModel.Address)></ValidationMessage>
+                          </div>
+                         </div> 
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient City</span>
+                                    <InputText class="form-control" @bind-Value="patientModel.City" Placeholder="Patient City" />
+                                    <ValidationMessage For=@(()=>patientModel.City)></ValidationMessage>
+                          </div>
+                         </div>  
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                 <span>Choose Doctor</span>
+                                    <InputSelect id="doctor" @bind-Value="patientModel.DoctorId" class="form-control" DisplayName="Choose Doctor">
+                                        <option value="0">-Select Doctor-</option>
+
+                                        @foreach (var doctor in dService.Doctors)
+                                        {
+                                            <option value="@doctor.Id">@doctor.DoctorName</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() =>patientModel.DoctorId)" />
+
+                                     
+                          </div>
+                         </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>OPD Type</span>
+                                    <InputSelect id="opdType" @bind-Value="patientModel.Opdtype" class="form-control" DisplayName="Choose Doctor">
+                                        <option value="">-Select OPD Type-</option>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Emergency">Emergency</option>
+                                    </InputSelect>
+                                    <ValidationMessage For=@(()=>patientModel.Opdtype)></ValidationMessage>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>OPD Fees</span>
+                                    <InputNumber class="form-control" @bind-Value="patientModel.Opdfess" Placeholder="200"></InputNumber>
+                                    <ValidationMessage For=@(()=>patientModel.Opdtype)></ValidationMessage>
+                                </div>
+                            </div>
+                        </div>
+                 </div>
+             </section>
+                <div class="modal-footer sfButton">
+                    <SfButton type="submit" IsPrimary="true" OnClick="handelCreate">
+                        <span class="oi oi-pencil"></span> Submit
+                    </SfButton>
+                    <SfButton type="button" IsPrimary="false" class="e-danger" OnClick=reset_form>
+                        <span class="oi oi-trash"></span> Reset
+                    </SfButton>
+                    <SfButton type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <span class="oi oi-account-logout"></span> Close
+                    </SfButton>
+                    @*<button type="button" class="">Save changes</button>*@
+                </div>
+         </div>
+     </div>
+ 
+        </EditForm>
+</ContentMain>
+                            
+                                 

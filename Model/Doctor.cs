@@ -21,7 +21,7 @@ namespace Model
         public bool Editing { get; set; } = false;
         [NotMapped]
         public bool IsNew { get; set; } = false;
-        public string hospitalID { get; set; }
+        public string? hospitalID { get; set; }
 
     }
 }

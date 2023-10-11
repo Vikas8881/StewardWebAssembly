@@ -152,12 +152,12 @@ namespace StewardAPI.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "f510f839-e9bb-49b0-8804-395c788ba1b0",
+                            UserId = "d6a55836-f8bd-4cd2-8fa9-4ef0ec17f12e",
                             RoleId = "ba4026c4-1f90-478d-9b0f-dbee61cdb2cc"
                         },
                         new
                         {
-                            UserId = "2a825352-6b98-4a80-8380-b3f15409e5eb",
+                            UserId = "750d7cb0-46a2-44ab-98bd-a47feb53aecb",
                             RoleId = "de4ccc9c-2743-4c14-aa50-394d66c3b17b"
                         });
                 });
@@ -236,25 +236,6 @@ namespace StewardAPI.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("Model.Diagnosis", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Diagnosisname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("diagnosisname");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("diagnosis", (string)null);
-                });
-
             modelBuilder.Entity("Model.Doctor", b =>
                 {
                     b.Property<int>("Id")
@@ -281,7 +262,6 @@ namespace StewardAPI.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("hospitalID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -289,582 +269,114 @@ namespace StewardAPI.Migrations
                     b.ToTable("Doctor", (string)null);
                 });
 
-            modelBuilder.Entity("Model.GenComplaints", b =>
+            modelBuilder.Entity("Model.GenAdvice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AdviceID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdviceID"));
 
-                    b.Property<string>("Complaints")
-                        .IsRequired()
+                    b.Property<string>("AdviceName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.Property<string>("valueID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AdviceID");
+
+                    b.ToTable("GenAdvises");
+                });
+
+            modelBuilder.Entity("Model.GenComplaints", b =>
+                {
+                    b.Property<int>("complainID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("complainID"));
+
+                    b.Property<string>("ComplaintsName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("valueID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("complainID");
 
                     b.ToTable("GenComplaintsList", (string)null);
                 });
 
-            modelBuilder.Entity("Model.GenDiagnosis", b =>
+            modelBuilder.Entity("Model.GenDignosis", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DignosisId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DignosisId"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Diagnosis")
-                        .IsRequired()
+                    b.Property<string>("DignosisName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("valueID")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("GenDiagnosisList", (string)null);
+                    b.HasKey("DignosisId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ABD DISTENTION OCCASIONALLY"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ABDOMEN"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ABDOMINAL CRAMPS"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RETENTION OF URINE TWICE"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RESPIRATORY TRACT INFECTION"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE CHEST PAIN"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RHINITIS"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE KIDNEY INJURY"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE GASTROENTERITIS"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE LOW BACK PAIN"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RHINOSINUSITIS"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE BRONCHITIS"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE ABDOMINAL PAIN"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "Acne"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACID ERUCTATION ACID PEPTIC DISEASE ACIDITY"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACANTHOSIS NIGRICANS"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACHE ACHYMOSIS"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACNE VULGARIS"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACROMEGALY"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE BRONCHITIS"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE CHEST PAIN"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE DIARRHOEA"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE EXACERBATION"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE FEBRILE ILLNESS"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE GASTROENTERITIS"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE GASTRITIS"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE KIDNEY INJURY"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE LOW BACK PAIN"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE OTITIS EXTERNA"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RETENTION OF URINE TWICE"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RESPIRATORY TRACT INFECTION"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RHINITIS"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE RHINOSINUSITIS"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ACUTE VERTIGO"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ADMIT"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AEROPHAGIA"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AFTER DEFECATION"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AFEBRILE"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGGRESSIVE"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGITATED DEPRESSION"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGGRESSION"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGITATION"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGORAPHOBIA"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AGGRESSION LESS"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AHO RTA"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AID TYPE 1"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AIR HUNGER"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AID TYPE 2"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALBUMINURIA"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALCHOL INTAKE DAILY"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALCOHOLIC"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGY"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC WHOLE BODY RASHES"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC BRONCHITIS"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC CONJUNCTIVITIS"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC RHINITIS"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC RASHES"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALLERGIC COUGH"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALOPECIA"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERNATING CONSTIPATENT"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERED TASTE"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERATION OF TASTE"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERED BOWEL HABIT"
-                        },
-                        new
-                        {
-                            Id = 65,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERED SENSORIUM"
-                        },
-                        new
-                        {
-                            Id = 66,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERED VOICE"
-                        },
-                        new
-                        {
-                            Id = 67,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ALTERED SLEEP"
-                        },
-                        new
-                        {
-                            Id = 68,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AMPTATION BELOW KNEE"
-                        },
-                        new
-                        {
-                            Id = 69,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AMOTIVATION"
-                        },
-                        new
-                        {
-                            Id = 70,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AMENORRHEA"
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "AMNESIA"
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANAEMIA"
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANAL ITCHING"
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANAL BURNING"
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANASARCA"
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANAL FISSURE"
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANAL PAIN"
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANDROGENETIC ALOPECIA"
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANEMIA"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANERGIA"
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANGER"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANGINA"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANHEDONIA"
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANKLE SWELLING"
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANKLE JOINT PAIN"
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANKLE PAIN"
-                        },
-                        new
-                        {
-                            Id = 87,
-                            Date = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Diagnosis = "ANKLE INJURY"
-                        });
+                    b.ToTable("GenDiagnos");
                 });
 
-            modelBuilder.Entity("Model.GenMedicines", b =>
+            modelBuilder.Entity("Model.GenLabInvestigation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("InvestigationID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvestigationID"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Medicines")
-                        .IsRequired()
+                    b.Property<string>("InvestigationName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("valueID")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("GenMedicinesList", (string)null);
+                    b.HasKey("InvestigationID");
+
+                    b.ToTable("GenlabInvestigation");
+                });
+
+            modelBuilder.Entity("Model.GenMedicine", b =>
+                {
+                    b.Property<int>("medicineID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("medicineID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("MedicineName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("valueID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("medicineID");
+
+                    b.ToTable("GenMedicine");
                 });
 
             modelBuilder.Entity("Model.Patient", b =>
@@ -918,7 +430,6 @@ namespace StewardAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("hospitalID")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -928,255 +439,96 @@ namespace StewardAPI.Migrations
                     b.ToTable("Patient", (string)null);
                 });
 
-            modelBuilder.Entity("Model.PatientAdvise", b =>
+            modelBuilder.Entity("Model.pAdvice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Advice")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Datetime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("date")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Pid")
+                    b.Property<int>("pID")
                         .HasColumnType("int");
 
-                    b.Property<string>("hospitalID")
+                    b.Property<int>("uID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("valueID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("PatientAdvise", (string)null);
+                    b.ToTable("PAdvice");
                 });
 
-            modelBuilder.Entity("Model.PatientComplaint", b =>
+            modelBuilder.Entity("Model.pComplain", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Complaint")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Datetime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Pid")
+                    b.Property<int>("pID")
                         .HasColumnType("int");
 
-                    b.Property<string>("hospitalID")
+                    b.Property<int>("uID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("valueID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("PatientComplaints");
+                    b.ToTable("PComplains");
                 });
 
-            modelBuilder.Entity("Model.PatientDiagnosis", b =>
+            modelBuilder.Entity("Model.pDignosis", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Complaintname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Datetime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Pid")
+                    b.Property<int>("pID")
                         .HasColumnType("int");
 
-                    b.Property<string>("hospitalID")
+                    b.Property<int>("uID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("valueID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("PatientDiagnosis", (string)null);
+                    b.ToTable("PDignosis");
                 });
 
-            modelBuilder.Entity("Model.PatientInvestigation", b =>
+            modelBuilder.Entity("Model.pInvestigation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime?>("Datetime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InvestigationName")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValueSql("(N'')");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Pid")
+                    b.Property<int>("pID")
                         .HasColumnType("int");
 
-                    b.Property<string>("hospitalID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PatientInvestigation", (string)null);
-                });
-
-            modelBuilder.Entity("Model.PatientMedicine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("uID")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("Datetime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Department")
+                    b.Property<string>("valueID")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DoctorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("ID");
 
-                    b.Property<string>("Dose")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("duration");
-
-                    b.Property<string>("Frequency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("frequency");
-
-                    b.Property<string>("Medicines")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("notes");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Pid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("WhenTake")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("when_take");
-
-                    b.Property<string>("hospitalID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PatientMedicine", (string)null);
+                    b.ToTable("PInvestigation");
                 });
 
             modelBuilder.Entity("StewardAPI.Models.ApplicationUser", b =>
@@ -1255,9 +607,9 @@ namespace StewardAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a825352-6b98-4a80-8380-b3f15409e5eb",
+                            Id = "750d7cb0-46a2-44ab-98bd-a47feb53aecb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6a3bf936-de80-4a55-860c-9dffccfcf40f",
+                            ConcurrencyStamp = "ae2fd07a-64d5-41ac-88ba-78aecc7d155a",
                             Email = "vikasmalik8881@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Vikas",
@@ -1266,17 +618,17 @@ namespace StewardAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "VIKASMALIK8881@GMAIL.COM",
                             NormalizedUserName = "VIKASMALIK8881@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPVBy8OHZKfexd9J7nkRDAjT+VwG3wpHBV6vR0hnVm+VnQAHoN9DTt43Ap56TkfAjg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHVZAffTvlnfNwrckbJlmIlRPfH4VVmPxG2JEfkXmijxGaBI0bkuTuwMU9KG2QMuSQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "fccdb8d3-5f2d-4bf2-8e19-a49d1f4d6802",
+                            SecurityStamp = "fc81abfa-6cc2-4c90-afb9-759e7e98e71e",
                             TwoFactorEnabled = false,
                             UserName = "vikasmalik8881@gmail.com"
                         },
                         new
                         {
-                            Id = "f510f839-e9bb-49b0-8804-395c788ba1b0",
+                            Id = "d6a55836-f8bd-4cd2-8fa9-4ef0ec17f12e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d02b0e33-7801-4bd0-a27b-042a4881b4ed",
+                            ConcurrencyStamp = "7f5e746a-ceb5-48f3-9a43-6a798c39a7d9",
                             Email = "Vmalik@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Vikas",
@@ -1285,9 +637,9 @@ namespace StewardAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "VMALIK@GMAIL.COM",
                             NormalizedUserName = "VMALIK@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEH0FXs6Xti14jMabj3scSRpCeLm7VrboXASn4bQnLczx36jtNZlOLcba7qKYJlUW4Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEC3kwW8HBp4JKzU9IPBtrQBjuz5Ud9xay4AzPZN2Rrlv7ujJ2aT3yzuAcablwe6TFg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e7613c8c-b6f2-479a-8778-bf45adab0de9",
+                            SecurityStamp = "3d059c82-36b3-4125-a720-e49d03aee68d",
                             TwoFactorEnabled = false,
                             UserName = "Vmalik@gmail.com"
                         });
@@ -1342,6 +694,17 @@ namespace StewardAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Model.Patient", b =>
+                {
+                    b.HasOne("Model.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
                 });
 #pragma warning restore 612, 618
         }

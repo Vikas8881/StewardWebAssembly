@@ -1,8 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Model;
+using Model.DTO;
 using StewardAPI.Data;
-using StewardAPI.Dto;
+
 using StewardAPI.Repository.User;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection.Metadata.Ecma335;
 
@@ -13,12 +18,13 @@ namespace StewardAPI.Repository.IDoctorRepository
         private readonly AppDbContext _appDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
-
-        public DoctorRepo(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor, IUserService userService)
+        private readonly IMapper _mapper;
+        public DoctorRepo(AppDbContext appDbContext, IHttpContextAccessor httpContextAccessor, IUserService userService, IMapper mapper)
         {
             _appDbContext = appDbContext;
             _httpContextAccessor = httpContextAccessor;
             _userService = userService;
+            _mapper = mapper;
         }
         public async Task<ServiceResponse<Doctor>> CreateDoctor(Doctor doctor)
         {
@@ -94,38 +100,27 @@ namespace StewardAPI.Repository.IDoctorRepository
         //   // {
         //   //     Data = await _appDbContext.Doctors.Where
         //   //     (d=>d.Department.Equals(departmentUrl)
-                
+
         //   //     )
-                
+
 
         //   //}
         //}
 
-        public async Task<ServiceResponse<List<Doctor>>> GetDoctorHospital(/*string hospitalID*/)
+        public async Task<ServiceResponse<List<Doctor>>> GetDoctorHospital()
         {
-           string hospitalID = _userService.GetUserID();
-
+            string hospitalID = _userService.GetUserID();
+          
             var doctor = await _appDbContext.Doctors
-              .Where(c => !c.Deleted && c.hospitalID==hospitalID)
-              .ToListAsync();
-
-            if (doctor != null)
+            .Where(c => !c.Deleted && c.hospitalID == hospitalID)
+            .ToListAsync();
+            //var dto=_mapper.Map<DoctorDTO>(doctor);
+            return new ServiceResponse<List<Doctor>>
             {
-                return new ServiceResponse<List<Doctor>>
-                {
-                    Data = doctor,
-                    Success = true
-                };
-            }
-            else
-            {
-                return new ServiceResponse<List<Doctor>>
-                {
-                    Success = false,
-                    Message="No Record Found."
-                };
-            }
-
+                Data = doctor,
+                Success = true,
+            };
+           
         }
 
         public Task<ServiceResponse<List<string>>> GetDoctorSearchSuggestions(string SearchText)

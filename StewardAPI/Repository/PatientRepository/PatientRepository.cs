@@ -1,7 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Model;
+using Model.DTO;
 using StewardAPI.Data;
+
 using StewardAPI.Repository.User;
+using System.Linq;
 using System.Numerics;
 
 namespace StewardAPI.Repository.PatientRepository
@@ -10,30 +15,52 @@ namespace StewardAPI.Repository.PatientRepository
     {
         private readonly AppDbContext _appDbContext;
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public PatientRepository(AppDbContext appDbContext, IUserService userService)
+        public PatientRepository(AppDbContext appDbContext, IUserService userService, IMapper mapper)
         {
             _appDbContext = appDbContext;
             _userService = userService;
+            _mapper = mapper;
         }
-        public async Task<ServiceResponse<Patient>> CreatePatient(Patient patient)
+        public async Task<ServiceResponse<PatientCreateDTO>> CreatePatient(PatientCreateDTO patientCreateDTO)
         {
-            var uid = await _appDbContext.Patients.MaxAsync(e => e.Uhid);
+            string hospitalID = _userService.GetUserID();
+            var patient=_mapper.Map<Patient>(patientCreateDTO);
+
+            var uid = await _appDbContext.Patients.Where(c => c.hospitalID == hospitalID).MaxAsync(e => e.Uhid);
+              
             var maxValue = uid += 1;
             if (uid == null)
             {
                 uid = 1;
             }
             patient.Uhid = uid;
+            patient.hospitalID = hospitalID;
             _appDbContext.Add(patient);
             await _appDbContext.SaveChangesAsync();
 
-            return new ServiceResponse<Patient>
+            return new ServiceResponse<PatientCreateDTO>
             {
-                Data = patient
+                Data = patientCreateDTO
             };
         }
 
+        public async Task<ServiceResponse<PatientCreateDTO>> PostPatientwithUHID(PatientCreateDTO patientCreateDTO)
+        {
+            var patient = _mapper.Map<Patient>(patientCreateDTO);
+
+           
+        
+            patient.hospitalID = _userService.GetUserID();
+            _appDbContext.Add(patient);
+            await _appDbContext.SaveChangesAsync();
+
+            return new ServiceResponse<PatientCreateDTO>
+            {
+                Data = patientCreateDTO
+            };
+        }
         public async Task<ServiceResponse<bool>> DeletePatient(int Id)
         {
             var dbPatient = await _appDbContext.Patients.FindAsync(Id);
@@ -54,21 +81,11 @@ namespace StewardAPI.Repository.PatientRepository
             };
         }
 
-        //public Task<ServiceResponse<List<Patient>>> GetByDoctor(string doctorID)
-        //{
-        //    //var doctorID = _userService.GetUserID();
-        //    //var patient = await _appDbContext.Patients
-        //    //    .Where(p => p.hospitalID == hospitalID && !p.Deleted).ToListAsync();
-        //    //return new ServiceResponse<List<Patient>>
-        //    //{
-        //    //    Data = patient
-        //    //};
-        //}
-
         public async Task<ServiceResponse<List<Patient>>> GetByHospital()
         {
            var hospitalID = _userService.GetUserID();
             var patient = await _appDbContext.Patients
+                .Include(d => d.Doctor)
                 .Where(p => p.hospitalID == hospitalID && !p.Deleted).ToListAsync();
            return new ServiceResponse<List<Patient>>
            { 
@@ -81,6 +98,7 @@ namespace StewardAPI.Repository.PatientRepository
             var response = new ServiceResponse<Patient>();
             Patient patient = null;
             patient = await _appDbContext.Patients
+                 .Include(d => d.Doctor)
                      .FirstOrDefaultAsync(d => d.Id == ID && !d.Deleted);
             if (patient == null)
             {
@@ -116,6 +134,28 @@ namespace StewardAPI.Repository.PatientRepository
                 Success = true,
                 Data = patient
             };
+        }
+  
+      
+
+        public async Task<ServiceResponse<Patient>> SearchPatientUhid(int uhid)
+        {
+            string hospitalID = _userService.GetUserID();
+            var response = new ServiceResponse<Patient>();
+            Patient patient = null;
+            patient = await _appDbContext.Patients.Where(c=> c.hospitalID == hospitalID)
+                      .Include(d => d.Doctor)
+                     .FirstOrDefaultAsync(d => d.Uhid == uhid && !d.Deleted);
+            if (patient == null)
+            {
+                response.Success = false;
+                response.Message = "Sorry patient not exists.";
+            }
+            else
+            {
+                response.Data = patient;
+            }
+            return response;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
+using Model.DTO;
 using StewardAPI.Repository.IDoctorRepository;
 using Stripe;
 
@@ -23,7 +24,7 @@ namespace StewardAPI.Controllers
             return Ok(result);
         }
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Doctor>>>> GetDoctors(/*string hospitalID*/)
+        public async Task<ActionResult<ServiceResponse<List<DoctorDTO>>>> GetDoctors()
         {
             
             var result = await _doctorRepository.GetDoctorHospital();

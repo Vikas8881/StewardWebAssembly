@@ -15,6 +15,8 @@ using StewardAPI.Repository.DepartmentRepo;
 using StewardAPI.Models;
 using StewardAPI.Repository.IDoctorRepository;
 using StewardAPI.Repository.PatientRepository;
+using StewardAPI.Repository.Global;
+using StewardAPI.Repository.prescription;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -28,6 +30,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepo>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IGlobalComplaint, GlobalComplaint>();
+builder.Services.AddScoped<IGlobalAdvice, GlobalAdviceRepo>();
+builder.Services.AddScoped<IGlobalDignosis, GlobalDignosisRepo>();
+builder.Services.AddScoped<IGlobalInvestigation, GlobalInvestigationRepo>();
+builder.Services.AddScoped<IGlobalMedicine, GlobalMedicine>();
+
+builder.Services.AddScoped<IComplaintRepo, ComplaintRepo>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 

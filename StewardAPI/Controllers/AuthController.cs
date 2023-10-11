@@ -4,12 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Model;
-using StewardAPI.Dto;
+
 using StewardAPI.Repository.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using StewardAPI.Models;
+using Model.DTO;
 
 namespace StewardAPI.Controllers
 {
@@ -66,7 +67,7 @@ namespace StewardAPI.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<ServiceResponse<string>>> Login(LoginUserDto request)
+        public async Task<ActionResult<ServiceResponse<string>>> Login(Model.LoginUserDto request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)

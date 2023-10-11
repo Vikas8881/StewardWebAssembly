@@ -1,0 +1,12 @@
+﻿@page "/users/logout"
+
+@inject NavigationManager navManager
+<h3>Logout</h3>
+
+@code {
+	protected override async Task OnInitializedAsync()
+	{
+		
+		navManager.NavigateTo("/");
+	}
+}

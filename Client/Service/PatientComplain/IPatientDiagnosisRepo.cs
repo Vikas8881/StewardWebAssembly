@@ -3,8 +3,8 @@ using Model;
 
 namespace Client.Service.PatientComplain
 {
-    public interface IPatientComplainRepo
+    public interface IPatientDiagnosisRepo
     {
-        Task<pComplain> CreateComplain(pComplain pComplain);
+        Task<pDignosis> CreateDiagnosis(pDignosis pDignosis);
     }
 }

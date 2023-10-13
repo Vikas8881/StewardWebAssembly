@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Model;
+using Model.DTO;
 using StewardAPI.Data;
+using Stripe;
+using System;
 
 namespace StewardAPI.Repository.prescription
 {
@@ -28,6 +32,30 @@ namespace StewardAPI.Repository.prescription
                 Success = true,
                 Message = "Data Saved Successfully."
             };
+        }
+
+        public async Task<ServiceResponse<List<GenLabInvestigation>>> GetPatientInvestigations(int Pid)
+        {
+            //var response = new ServiceResponse<List<pInvestigation>>();
+            //List<pInvestigation> patient = null;
+            ////patient = await _appDBContext.PInvestigation.Where(d => d.pID == Pid).ToListAsync();
+            //patient = await _appDBContext.PInvestigation.FromSqlRaw("SP_GetInvestigation").Where(d => d.pID == Pid).ToListAsync();
+            //if (patient == null)
+            //{
+            //    response.Success = false;
+            //    response.Message = "Sorry Medicines not exists.";
+            //}
+            //else
+            //{
+            //    response.Data = patient;
+            //}
+            //return response;
+            var response = new ServiceResponse<List<GenLabInvestigation>>
+            {
+                Data = await _appDBContext.GenlabInvestigation.FromSqlRaw($"SP_GetInvestigation @PID={Pid}").ToListAsync()
+
+            };
+            return response;
         }
     }
 }

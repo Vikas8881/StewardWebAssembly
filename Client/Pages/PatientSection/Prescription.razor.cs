@@ -1,18 +1,29 @@
 ﻿using Client.Service.Global;
+using Client.Service.Static;
 using Microsoft.AspNetCore.Components;
 using Model;
 using Syncfusion.Blazor.DropDowns;
+using Syncfusion.Blazor.Notifications;
 using Syncfusion.Blazor.RichTextEditor;
 
 namespace Client.Pages.PatientSection
 {
     public partial class Prescription : ComponentBase
     {
+        SfToast ToastObj;
+        private string ToastPosition = "Right";
         [Parameter]
-     
+
         public int ID { get; set; }
-       
+
         private Patient patientModel = new Patient();
+        private PatientMedicines _patientMedicines = new PatientMedicines();
+        List<GenMedicine> _genMedicines { get; set; } = new List<GenMedicine>();
+        List<PatientMedicines> _patientMedicinesList = new()
+        {
+            new PatientMedicines()
+            { },
+        };
 
         //Complain
         private pComplain _pComplain = new pComplain();
@@ -22,25 +33,25 @@ namespace Client.Pages.PatientSection
         private GenComplaints _complaints = new GenComplaints();
 
         //Advice
-        //private pComplain _pComplain = new pComplain();
+        private pAdvice _pAdvice = new pAdvice();
         SfMultiSelect<string[], GenAdvice> MultiAdvice;
         public string[] MultiAdv { get; set; } = new string[] { };
         public List<GenAdvice> GenAdviceList { get; set; }
         private GenAdvice _advice = new GenAdvice();
-        
+
         //Diagnosis
-        //private pComplain _pComplain = new pComplain();
+        private pDignosis _pDiagnosis = new pDignosis();
         SfMultiSelect<string[], GenDignosis> MultiDignosis;
         public string[] MultiDig { get; set; } = new string[] { };
         public List<GenDignosis> GenDignosisList { get; set; }
         private GenDignosis _dignosis = new GenDignosis();
 
         //Investigation
-        //private pComplain _pComplain = new pComplain();
+        private pInvestigation _pInvestigation = new pInvestigation();
         SfMultiSelect<string[], GenLabInvestigation> MultiInvestigation;
         public string[] MultiInv { get; set; } = new string[] { };
         public List<GenLabInvestigation> GenInvestigationList { get; set; }
-        private GenLabInvestigation _investigation = new GenLabInvestigation(); 
+        private GenLabInvestigation _investigation = new GenLabInvestigation();
         //Medicine
         //private pComplain _pComplain = new pComplain();
         SfMultiSelect<string[], GenMedicine> MultiMedicine;
@@ -56,6 +67,15 @@ namespace Client.Pages.PatientSection
                 patientModel.Name = response.Data.Name;
                 patientModel.Uhid = response.Data.Uhid;
             }
+            //Get Medicine
+            var response2 = await gMedicine.GetMedicine();
+            if (response2.Success)
+            {
+
+                _genMedicines = response2.Data;
+
+            }
+
             //Complain
             var complain = await gComplaint.GetComplaints();
             if (complain.Success)
@@ -73,7 +93,7 @@ namespace Client.Pages.PatientSection
             if (dignosis.Success)
             {
                 GenDignosisList = dignosis.Data;
-            }  
+            }
             //Investigation
             var investigation = await gInvestigation.GetlabInvestigation();
             if (investigation.Success)
@@ -83,24 +103,6 @@ namespace Client.Pages.PatientSection
 
 
         }
-        async Task handelCreate()
-        {
-            var response = await pService.CreatePatient(patientModel);
-            if (response != null)
-            {
-
-                patientModel.Name = "";
-                patientModel.Address = "";
-                patientModel.City = "";
-                patientModel.Phone = "";
-                patientModel.Opdfess = 0;
-                patientModel.Opdtype = "";
-            }
-            else
-            {
-
-            }
-        }
         async Task createComplain()
         {
             CreateComplaint();
@@ -108,8 +110,46 @@ namespace Client.Pages.PatientSection
             CreateAdvice();
             CreateInvestigation();
             CreateMedicine();
-        }
+            CreatePatientMedicine();
 
+        }
+        private async Task CreatePatientMedicine()
+        {
+            //Medicine
+            var patientMedicine = _patientMedicinesList;
+            patientMedicine.ToArray();
+            foreach (PatientMedicines patientMedicines in _patientMedicinesList)
+            {
+                if (patientMedicines != null)
+                {
+                    if (patientMedicines.Medicines == null)
+                    {
+                        await this.ToastObj.ShowAsync(Toast[4]);
+                    }
+                    else
+                    {
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        patientMedicines.Pid = ID;
+                        patientMedicines.Uhid = uhid;
+                        var medi = patientMedicines.Medicines;
+
+                        await pMedicine.CreatePatientMedicine(patientMedicines);
+
+                        if (medi != null)
+                        {
+
+                            Guid valueID = Guid.NewGuid();
+                            _Medicine.valueID = valueID.ToString();
+                            _Medicine.MedicineName = patientMedicines.Medicines;
+                            await gMedicine.Create(_Medicine);
+                        }
+                        await this.ToastObj.ShowAsync(Toast[1]);
+                    }
+
+
+                }
+            }
+        }
         private async Task CreateMedicine()
         {
             IEnumerable<GenMedicine> SelectedMedicines = await MultiMedicine.GetItemsAsync();
@@ -145,9 +185,9 @@ namespace Client.Pages.PatientSection
 
         private async Task CreateComplaint()
         {
-            
+
             IEnumerable<GenComplaints> SelectedComplains = await this.MultiComplain.GetItemsAsync();
-            if(SelectedComplains !=null)
+            if (SelectedComplains != null)
             {
                 foreach (var selectedcomplain in SelectedComplains)
                 {
@@ -171,7 +211,6 @@ namespace Client.Pages.PatientSection
                         _pComplain.uID = uhid;
                         _pComplain.valueID = valueID.ToString();
                         await pComplain.CreateComplain(_pComplain);
-
                     }
                 }
             }
@@ -180,64 +219,64 @@ namespace Client.Pages.PatientSection
         private async Task CreateInvestigation()
         {
             IEnumerable<GenLabInvestigation> SelectedInvestigations = await this.MultiInvestigation.GetItemsAsync();
-            if(SelectedInvestigations !=null)
-            { 
-            foreach (var selectedInvestigation in SelectedInvestigations)
+            if (SelectedInvestigations != null)
             {
-                if (Guid.TryParse(selectedInvestigation.valueID, out Guid outputGuid))
+                foreach (var selectedInvestigation in SelectedInvestigations)
                 {
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = selectedInvestigation.valueID;
-                    await pComplain.CreateComplain(_pComplain);
+                    if (Guid.TryParse(selectedInvestigation.valueID, out Guid outputGuid))
+                    {
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pInvestigation.pID = ID;
+                        _pInvestigation.uID = uhid;
+                        _pInvestigation.valueID = selectedInvestigation.valueID;
+                        await pInvestigation.CreateInvestigation(_pInvestigation);
+                    }
+                    else
+                    {
+                        //handle non valid guid format.
+                        Guid valueID = Guid.NewGuid();
+                        _investigation.valueID = valueID.ToString();
+                        _investigation.InvestigationName = selectedInvestigation.InvestigationName;
+                        await gInvestigation.Create(_investigation);
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pInvestigation.pID = ID;
+                        _pInvestigation.uID = uhid;
+                        _pInvestigation.valueID = valueID.ToString();
+                        await pInvestigation.CreateInvestigation(_pInvestigation);
+                    }
                 }
-                else
-                {
-                    //handle non valid guid format.
-                    Guid valueID = Guid.NewGuid();
-                    _investigation.valueID = valueID.ToString();
-                    _investigation.InvestigationName = selectedInvestigation.InvestigationName;
-                    await gInvestigation.Create(_investigation);
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = valueID.ToString();
-                    await pComplain.CreateComplain(_pComplain);
-                }
-            }
             }
         }
 
         private async Task CreateAdvice()
         {
             IEnumerable<GenAdvice> SelectedAdvices = await this.MultiAdvice.GetItemsAsync();
-            if(SelectedAdvices !=null)
-            { 
-            foreach (var selectedAdvice in SelectedAdvices)
+            if (SelectedAdvices != null)
             {
-                if (Guid.TryParse(selectedAdvice.valueID, out Guid outputGuid))
+                foreach (var selectedAdvice in SelectedAdvices)
                 {
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = selectedAdvice.valueID;
-                    await pComplain.CreateComplain(_pComplain);
+                    if (Guid.TryParse(selectedAdvice.valueID, out Guid outputGuid))
+                    {
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pAdvice.pID = ID;
+                        _pAdvice.uID = uhid;
+                        _pAdvice.valueID = selectedAdvice.valueID;
+                        await pAdvice.CreateAdvice(_pAdvice);
+                    }
+                    else
+                    {
+                        //handle non valid guid format.
+                        Guid valueID = Guid.NewGuid();
+                        _advice.valueID = valueID.ToString();
+                        _advice.AdviceName = selectedAdvice.AdviceName;
+                        await gAdvice.Create(_advice);
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pAdvice.pID = ID;
+                        _pAdvice.uID = uhid;
+                        _pAdvice.valueID = valueID.ToString();
+                        await pAdvice.CreateAdvice(_pAdvice);
+                    }
                 }
-                else
-                {
-                    //handle non valid guid format.
-                    Guid valueID = Guid.NewGuid();
-                    _advice.valueID = valueID.ToString();
-                    _advice.AdviceName = selectedAdvice.AdviceName;
-                    await gAdvice.Create(_advice);
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = valueID.ToString();
-                    await pComplain.CreateComplain(_pComplain);
-                }
-            }
             }
         }
 
@@ -245,33 +284,56 @@ namespace Client.Pages.PatientSection
         private async Task CreateDiagnosis()
         {
             IEnumerable<GenDignosis> SelectedDignosiss = await this.MultiDignosis.GetItemsAsync();
-            if(SelectedDignosiss !=null)
-            { 
-            foreach (var selecteddignosis in SelectedDignosiss)
+            if (SelectedDignosiss != null)
             {
-                if (Guid.TryParse(selecteddignosis.valueID, out Guid outputGuid))
+                foreach (var selecteddignosis in SelectedDignosiss)
                 {
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = selecteddignosis.valueID;
-                    await pComplain.CreateComplain(_pComplain);
+                    if (Guid.TryParse(selecteddignosis.valueID, out Guid outputGuid))
+                    {
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pDiagnosis.pID = ID;
+                        _pDiagnosis.uID = uhid;
+                        _pDiagnosis.valueID = selecteddignosis.valueID;
+                        await pDaignosis.CreateDiagnosis(_pDiagnosis);
+                    }
+                    else
+                    {
+                        //handle non valid guid format.
+                        Guid valueID = Guid.NewGuid();
+                        _dignosis.valueID = valueID.ToString();
+                        _dignosis.DignosisName = selecteddignosis.DignosisName;
+                        await gDignosis.Create(_dignosis);
+                        int uhid = Convert.ToInt32(patientModel.Uhid);
+                        _pDiagnosis.pID = ID;
+                        _pDiagnosis.uID = uhid;
+                        _pDiagnosis.valueID = valueID.ToString();
+                        await pDaignosis.CreateDiagnosis(_pDiagnosis);
+                    }
                 }
-                else
-                {
-                    //handle non valid guid format.
-                    Guid valueID = Guid.NewGuid();
-                    _dignosis.valueID = valueID.ToString();
-                    _dignosis.DignosisName = selecteddignosis.DignosisName;
-                    await gDignosis.Create(_dignosis);
-                    int uhid = Convert.ToInt32(patientModel.Uhid);
-                    _pComplain.pID = ID;
-                    _pComplain.uID = uhid;
-                    _pComplain.valueID = valueID.ToString();
-                    await pComplain.CreateComplain(_pComplain);
-                }
-            }
             }
         }
+
+        //Static Content
+        List<WhenTake> LocalData = new List<WhenTake>
+        {
+    new WhenTake() { ID= "1-1-1-1", Text= "1-1-1-1" },
+    new WhenTake() { ID= "1-0-0-1", Text= "1-0-0-1" },
+         };
+
+        private List<ToastModel> Toast = new List<ToastModel>
+    {
+      /*0*/  new ToastModel{ Title = "Warning!", Content="There was a problem with your network connection.", CssClass="e-toast-warning", Icon="e-warning toast-icons" },
+      /*1*/  new ToastModel{ Title = "Success!", Content="Patient Registred Successfully.", CssClass="e-toast-success", Icon="e-success toast-icons" },
+       /*2*/ new ToastModel{ Title = "Error!", Content="A problem has been occurred while submitting your data.", CssClass="e-toast-danger", Icon="e-error toast-icons" },
+       /*3*/ new ToastModel{ Title = "Information!", Content="Please read the comments carefully.", CssClass="e-toast-info", Icon="e-info toast-icons" },
+       /*4*/ new ToastModel{ Title = "Warning!", Content="Please Enter Medicine Name.",  CssClass="e-toast-warning", Icon="e-warning toast-icons"},
+       /*5*/ new ToastModel{ Title = "Warning!", Content="Please Enter Phone.",  CssClass="e-toast-warning", Icon="e-warning toast-icons" },
+       /*6*/ new ToastModel{ Title = "Warning!", Content="Please Enter Address.", CssClass="e-toast-warning", Icon="e-warning toast-icons"},
+       /*7*/ new ToastModel{ Title = "Warning!", Content="Please Enter City.", CssClass="e-toast-warning", Icon="e-warning toast-icons"},
+       /*8*/ new ToastModel{ Title = "Warning!", Content="Please Choose Doctor.", CssClass="e-toast-warning", Icon="e-warning toast-icons"},
+       /*9*/ new ToastModel{ Title = "Warning!", Content="Please Choose OPD Type.", CssClass="e-toast-warning", Icon="e-warning toast-icons"},
+    };
     }
+
+
 }

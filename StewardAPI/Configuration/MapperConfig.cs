@@ -16,6 +16,11 @@ namespace StewardAPI.Configuration
 
             CreateMap<PatientCreateDTO, Patient>().ReverseMap();
             CreateMap<PatientComplainDTO, pComplain>().ReverseMap();
+
+
+            //Complaints DTO
+            CreateMap<PatientInvestigationDTO, pInvestigation>().ReverseMap();
+
         }
     }
 }

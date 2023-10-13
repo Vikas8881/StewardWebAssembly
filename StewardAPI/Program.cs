@@ -37,6 +37,10 @@ builder.Services.AddScoped<IGlobalInvestigation, GlobalInvestigationRepo>();
 builder.Services.AddScoped<IGlobalMedicine, GlobalMedicine>();
 
 builder.Services.AddScoped<IComplaintRepo, ComplaintRepo>();
+builder.Services.AddScoped<IAdvice, AdviceRepo>();
+builder.Services.AddScoped<IDiagnosis, DiagnosisRepo>();
+builder.Services.AddScoped<Iinvestigations, InvestigationsRepo>();
+builder.Services.AddScoped<IPatientMedicineRepo, PatientMedicineRepo>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 

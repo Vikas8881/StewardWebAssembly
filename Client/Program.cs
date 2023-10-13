@@ -30,6 +30,10 @@ builder.Services.AddScoped<IGlobalInvestigation, GlobalInvestigationRepo>();
 builder.Services.AddScoped<IGlobalMedicine, GlobalMedicineRepo>();
 
 builder.Services.AddScoped<IPatientComplainRepo, PatientComplainRepo>();
+builder.Services.AddScoped<IPatientAdviceRepo, PatientAdviceRepo>();
+builder.Services.AddScoped<IPatientDiagnosisRepo, PatientDiagnosisRepo>();
+builder.Services.AddScoped<IPatientInvestigationRepo, PatientInvestigationRepo>();
+builder.Services.AddScoped<IPatientMedicineRepo, PatientMedicineRepo>();
 builder.Services.AddScoped<IauthenticationService, authenticationService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Model;
 using StewardAPI.Data;
 
@@ -28,6 +29,30 @@ namespace StewardAPI.Repository.prescription
                 Success = true,
                 Message = "Data Saved Successfully."
             };
+        }
+
+        public async Task<ServiceResponse<List<GenDignosis>>> GetPatientDiagnosis(int Pid)
+        {
+            //var response = new ServiceResponse<List<pInvestigation>>();
+            //List<pInvestigation> patient = null;
+            ////patient = await _appDBContext.PInvestigation.Where(d => d.pID == Pid).ToListAsync();
+            //patient = await _appDBContext.PInvestigation.FromSqlRaw("SP_GetInvestigation").Where(d => d.pID == Pid).ToListAsync();
+            //if (patient == null)
+            //{
+            //    response.Success = false;
+            //    response.Message = "Sorry Medicines not exists.";
+            //}
+            //else
+            //{
+            //    response.Data = patient;
+            //}
+            //return response;
+            var response = new ServiceResponse<List<GenDignosis>>
+            {
+                Data = await _appDBContext.GenDiagnos.FromSqlRaw($"SP_Get_Diagnosis @PID={Pid}").ToListAsync()
+
+            };
+            return response;
         }
     }
 }

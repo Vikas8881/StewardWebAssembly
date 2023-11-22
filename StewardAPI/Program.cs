@@ -17,6 +17,7 @@ using StewardAPI.Repository.IDoctorRepository;
 using StewardAPI.Repository.PatientRepository;
 using StewardAPI.Repository.Global;
 using StewardAPI.Repository.prescription;
+using StewardAPI.Repository.AppointmentRepo;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -41,6 +42,7 @@ builder.Services.AddScoped<IAdvice, AdviceRepo>();
 builder.Services.AddScoped<IDiagnosis, DiagnosisRepo>();
 builder.Services.AddScoped<Iinvestigations, InvestigationsRepo>();
 builder.Services.AddScoped<IPatientMedicineRepo, PatientMedicineRepo>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 

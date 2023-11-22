@@ -1,6 +1,8 @@
+using Append.Blazor.Printing;
 using Blazor.AdminLte;
 using Blazored.LocalStorage;
 using Client;
+using Client.Service.Appointment;
 using Client.Service.authenticationService;
 using Client.Service.DoctorRepo;
 using Client.Service.Global;
@@ -39,6 +41,14 @@ builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddScoped<IPrintingService, PrintingService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddLocalization();
 
+
+
+var host = builder.Build();
+await host.SetDefaultCulture();
+await host.RunAsync();
 
 await builder.Build().RunAsync();

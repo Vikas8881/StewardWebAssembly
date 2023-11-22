@@ -1,12 +1,8 @@
 ﻿using Model;
 using System.Net.Http.Json;
 
-namespace Client.Service.PatientRepo
+namespace Client.Service.PatientComplain
 {
-    public interface IPatientMedicineRepo
-    {
-        Task<PatientMedicines> CreatePatientMedicine(PatientMedicines patientMedicines);
-    }
     public class PatientMedicineRepo : IPatientMedicineRepo
     {
         private readonly HttpClient _httpClient;
@@ -21,6 +17,12 @@ namespace Client.Service.PatientRepo
             var result = await _httpClient.PostAsJsonAsync("PatientComplaint/PatientMedicineCreate", patientMedicines);
             var newPatient = (await result.Content.ReadFromJsonAsync<ServiceResponse<PatientMedicines>>()).Data;
             return newPatient;
+        }
+
+        public async Task<ServiceResponse<List<PatientMedicines>>> GetMedicines(int ID)
+        {
+            var result = await _httpClient.GetFromJsonAsync<ServiceResponse<List<PatientMedicines>>>($"PatientComplaint/getMedicines?PID={ID}");
+            return result;
         }
     }
 }

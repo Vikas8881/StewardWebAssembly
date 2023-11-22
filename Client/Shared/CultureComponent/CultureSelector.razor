@@ -1,0 +1,7 @@
+﻿
+<InputSelect  class="form-control" @bind-Value="@Culture">
+      @foreach (var culture in cultures)
+    {
+        <option value="@culture">@culture.DisplayName</option>
+    }
+</InputSelect>

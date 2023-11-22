@@ -119,11 +119,11 @@
     <div id="app">
         <div class="text-center">
             <!--<svg class="loading-progress">
-        <circle r="40%" cx="50%" cy="50%" />
-        <circle r="40%" cx="50%" cy="50%" />
-    </svg>
-    <div class="loading-progress-text"></div>-->
-           
+                <circle r="40%" cx="50%" cy="50%" />
+                <circle r="40%" cx="50%" cy="50%" />
+            </svg>
+            <div class="loading-progress-text"></div>-->
+
         </div>
     </div>
 
@@ -150,6 +150,12 @@
     <script src="dist/js/adminlte.min.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        window.blazorCulture = {
+            get: () => localStorage['BlazorCulture'],
+            set: (value) => localStorage['BlazorCulture'] = value
+        };
+    </script>
 </body>
 
 </html>

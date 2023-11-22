@@ -30,6 +30,7 @@ namespace StewardAPI.Data
        public virtual DbSet<pDignosis> PDignosis { get; set; }
        public virtual DbSet<pInvestigation> PInvestigation { get; set; }
        public virtual DbSet<PatientMedicines> PatientMedicines { get; set; }
+       public virtual DbSet<AppointmentModel> Appointments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

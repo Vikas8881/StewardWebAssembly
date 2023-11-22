@@ -1,0 +1,132 @@
+﻿@page "/Patient/NewScedule"
+@using Client.Service.Appointment
+@using Client.Service.DoctorRepo;
+@using Client.Service.PatientRepo;
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Schedule
+
+@using Model.DTO;
+@inject iDoctorRepo dService
+@inject IAppointmentService appointmentService
+@inject NavigationManager navManger
+@inject IJSRuntime JS
+
+
+<SfToast @ref="ToastObj" ID="toast_type">
+    <ToastPosition X="@ToastPosition"></ToastPosition>
+</SfToast>
+<ContentMain>
+    <EditForm Model="appointmentModel">
+     <DataAnnotationsValidator></DataAnnotationsValidator>
+     <ValidationSummary></ValidationSummary>
+     <div class="model-content">
+         <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Patient Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+         </div>
+         <div class="modal-body">
+             <section>
+                 <div class="container-fluid">
+                     <div class="row">
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                 <span>Patient Name</span>
+                                    <InputText class="form-control" @bind-Value="appointmentModel.Name" Placeholder="Patient Name" />
+                                    <ValidationMessage For=@(()=>appointmentModel.Name)></ValidationMessage>
+                          </div>
+                         </div> 
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient Phone</span>
+                                    <InputText data-mask="0000000000" class="form-control" @bind-Value="appointmentModel.phone" Placeholder="Patient Phone" />
+                                    <ValidationMessage For=@(()=>appointmentModel.phone)></ValidationMessage>
+                          </div>
+                         </div>  
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient Address</span>
+                                    <InputText class="form-control" @bind-Value="appointmentModel.Address" Placeholder="Patient Address" />
+                                    <ValidationMessage For=@(()=>appointmentModel.Address)></ValidationMessage>
+                          </div>
+                         </div> 
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                    <span>Patient City</span>
+                                    <InputText class="form-control" @bind-Value="appointmentModel.City" Placeholder="Patient City" />
+                                    <ValidationMessage For=@(()=>appointmentModel.City)></ValidationMessage>
+                          </div>
+                         </div>  
+                         <div class="col-lg-3">
+                             <div class="form-group">
+                                 <span>Choose Doctor</span>
+                                    <InputSelect id="doctor" @bind-Value="appointmentModel.DoctorID" class="form-control" DisplayName="Choose Doctor">
+                                        <option value="0">-Select Doctor-</option>
+
+                                        @foreach (var doctor in dService.Doctors)
+                                        {
+                                            <option value="@doctor.Id">@doctor.DoctorName</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() =>appointmentModel.DoctorID)" />
+
+                                     
+                          </div>
+                         </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>Appointment Type</span>
+                                    <InputSelect id="AppointmentType" @bind-Value="appointmentModel.AppointmentType" class="form-control" DisplayName="Appointment Type">
+                                        <option value="">-Select Appointment Type-</option>
+                                        <option value="OPD">OPD</option>
+                                        <option value="Procedure">Procedure</option>
+                                    </InputSelect>
+                                    <ValidationMessage For=@(()=>appointmentModel.AppointmentType)></ValidationMessage>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>Start Date/Time</span>
+                                 
+                                @*     <SfDatePicker Format="dd-MM-yyyy hh:mm tt" @bind-Value="@appointmentModel.starDateTime" Min="@DateTime.Now" class="form-control">
+                                     
+                                    </SfDatePicker> *@
+                                </div>
+                            </div> 
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>End Date/Time</span>
+                           
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <span>Fees</span>
+                               @*      <InputNumber class="form-control" @bind-Value="patientModel.Opdfess" Placeholder="200"></InputNumber>
+                                    <ValidationMessage For=@(()=>patientModel.Opdtype)></ValidationMessage> *@
+                                </div>
+                            </div>
+                        </div>
+                 </div>
+             </section>
+                <div class="modal-footer sfButton">
+                    <SfButton type="submit" IsPrimary="true" OnClick="handelCreate">
+                        <span class="oi oi-pencil"></span> Submit
+                    </SfButton>
+                    <SfButton type="button" IsPrimary="false" class="e-danger" OnClick=reset_form>
+                        <span class="oi oi-trash"></span> Reset
+                    </SfButton>
+                    <SfButton type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <span class="oi oi-account-logout"></span> Close
+                    </SfButton>
+                    @*<button type="button" class="">Save changes</button>*@
+                </div>
+         </div>
+     </div>
+ 
+        </EditForm>
+</ContentMain>
+                            
+                                 

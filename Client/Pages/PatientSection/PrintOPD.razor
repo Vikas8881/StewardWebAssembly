@@ -1,0 +1,275 @@
+﻿@page "/Patient/printopd/{ID:int}"
+@using Client.Shared.CultureComponent
+@inject IPatient pService
+@inject IPatientComplainRepo _PatientComplainRepo
+@inject IPatientAdviceRepo _PatientAdviceRepo
+@inject IPatientDiagnosisRepo _PatientDiagnosisRepo
+@inject IPatientInvestigationRepo _PatientInvestigationRepo
+@inject IPatientMedicineRepo _PatientMedicineRepo
+
+
+@inject IStringLocalizer<Resource> localizer
+
+
+@inject IPrintingService PrintingService
+@inject NavigationManager navManager
+<ContentMain>
+    <!-- Content Header (Page header) -->
+    <div class="content-header" style="background-color: #ecf0f5;padding-bottom:10px;color:black">
+        <div class="container-fluid">
+            <table class="content-header" style="width:100%">
+                <tr>
+                    <td style="width:33%;text-align:left">
+                        <h5>
+                            Dashboard
+                            <small style="color:green;">
+                                <i class="fa fa-fw fa-arrow-circle-left"></i> <a href="/dashboard" title="Cancel and go Back">  Cancel and go back! </a>
+                            </small>
+                        </h5>
+                    </td>
+                    <td style="width:33%; text-align:center; font-size:16px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;font-weight:bold;">
+                        OPD CONSULTATION
+                    </td>
+                    <td style="width:33%;text-align:right">
+                        <a href="/dashboard"><i class="fa fa-dashboard"></i> Dashboard</a> >>  <span class="active">Prescription</span>
+
+                    </td>
+                </tr>
+            </table>
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="card">
+        <div class="card-header">
+
+            <ol class="breadcrumb float-sm-left">
+                <li class="breadcrumb-item text-primary"><strong>UHID: @patientModel.Uhid</strong> | <strong>Patient: @patientModel.Name  </strong></li>
+
+            </ol>
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item">
+                     <div class="btn-group">   <div class="top-row">
+        <CultureSelector/>
+    </div></div>
+                   
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button @onclick="@(_=> PrintingService.Print("printable-form", PrintType.Html))" class="btn btn-primary">
+                            Print
+                        </button>
+                        <button class="btn btn-success">WhatsApp</button>
+                        <button class="btn btn-info">Email</button>
+                    </div>
+                    @* <button @onclick=@BacktoList class="btn btn-danger">Back</button> *@
+
+                </li>
+
+            </ol>
+        </div>
+        <div class=card-body>
+
+            <div style="margin:0px auto 0px; max-width:100%; padding:1px; background-color:rgba(255, 255, 255, 0.46);text-align:center; border-radius:0px 0px 10px 10px">
+                <div style="background-color:rgba(255, 255, 255, 0.80); border:dashed;padding:10px;border-radius:10px 10px 10px 10px;">
+
+                    <section class="content">
+                        <div class="container-fluid" id="printable-form">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (_ComplaintsList != null)
+                                        {
+                                            <table style="width:100%;text-align:left">
+                                                <tr>
+                                                    <td>
+
+                                                        <div class="col-lg-12 border border-primary" style="border-radius:5px 5px 5px 5px;text-align:center;margin-top:10px">
+                                                            <strong> Complaint</strong>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach (var model in _ComplaintsList.ToArray())
+                                                            {
+                                                                <div class="col-lg-1 border border-danger" style="margin:1px; border-radius:10px 10px 10px 10px">
+
+                                                                    @model.ComplaintsName
+
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (_pDignosisList != null)
+                                        {
+                                            <table style="width:100%;text-align:left">
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-lg-12 border border-primary" style="border-radius:5px 5px 5px 5px;text-align:center;margin-top:10px">
+                                                            <strong> Diagnosis</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach (var model in _pDignosisList.ToArray())
+                                                            {
+                                                                <div class="col-lg-1 border border-danger" style="margin:1px; border-radius:10px 10px 10px 10px">
+
+                                                                    @model.DignosisName
+
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                                <br /><br />
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (_genMedicines != null)
+                                        {
+                                              <div class="col-lg-12 border border-primary" style="border-radius:5px 5px 5px 5px;text-align:center;margin-top:10px">
+                                                <strong> Medicines</strong>
+                                            </div>
+                                            <div class="form-group" style="text-align:left">
+                                                <div class="row">
+                                                    <div class="col-lg-4"><strong>Medicine</strong></div>
+                                                    <div class="col-lg-2"><strong>Dosage</strong></div>
+                                                    <div class="col-lg-2"><strong>Timing</strong></div>
+                                                    <div class="col-lg-2"><strong>Frequency</strong></div>
+                                                    <div class="col-lg-2"><strong>Duration</strong></div>
+                                                  
+                                                </div>
+                                                @foreach (var model in _genMedicines.ToArray())
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-lg-4">@model.Medicines</div>
+                                                        <div class="col-lg-2">@model.Dose</div>
+                                                        <div class="col-lg-2">@localizer[@model.when_take]</div>
+                                                        <div class="col-lg-2">@model.frequency</div>
+                                                        <div class="col-lg-2">@model.duration</div>
+                                                       
+                                                    </div>
+                                                }
+                                            </div>
+                                            @*           <table class="table" style="width:100%;">
+
+                                        <thead class="thead-dark">
+                                        <tr>
+                                        <th>Medicine</th>
+                                        <th>Dosage</th>
+                                        <th>Timing</th>
+                                        <th>Frequency</th>
+                                        <th>Duration</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var model in _genMedicines.ToArray())
+                                        {
+                                        <tr>
+                                        <td>@model.Medicines</td>
+                                        <td>@model.Dose</td>
+                                        <td>@model.when_take</td>
+                                        <td>@model.frequency</td>
+                                        <td></td>
+                                        </tr>
+                                        }
+                                        </tbody>
+                                        </table> *@
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (_pAdviceList != null)
+                                        {
+                                            <table style="width:100%;text-align:left">
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-lg-12 border border-primary" style="border-radius:5px 5px 5px 5px;text-align:center;margin-top:10px">
+                                                            <strong> Advice</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach (var model in _pAdviceList.ToArray())
+                                                            {
+                                                                <div class="col-lg-1 border border-danger" style="margin:1px; border-radius:10px 10px 10px 10px">
+
+                                                                    @model.AdviceName
+
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        @if (_pInvestigationList != null)
+                                        {
+                                            <table style="width:100%;text-align:left">
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-lg-12 border border-primary" style="border-radius:5px 5px 5px 5px;text-align:center;margin-top:10px">
+                                                            <strong> Requested Investigations</strong>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="row">
+                                                            @foreach (var model in _pInvestigationList.ToArray())
+                                                            {
+                                                                <div class="col-lg-1 border border-danger" style="margin:1px; border-radius:10px 10px 10px 10px">
+
+                                                                    @model.InvestigationName
+
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            
+                      
+                          
+                       
+
+
+                   
+                            <br />
+                          
+                        </div>
+
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Main content -->
+</ContentMain>

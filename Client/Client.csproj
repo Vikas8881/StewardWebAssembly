@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+	  <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
 
   <ItemGroup>
@@ -1611,6 +1612,8 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Append.Blazor.Printing" Version="6.2.0" />
+	  <PackageReference Include="Microsoft.Extensions.Localization" Version="7.0.12" />
 	  <PackageReference Include="Syncfusion.Blazor" Version="19.4.0.48" />
 
 	  <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
@@ -1635,6 +1638,24 @@
 
   <ItemGroup>
     <Folder Include="Pages\Dashboard\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Shared\ResourceFiles\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Shared\ResourceFiles\Resource.hi.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Shared\ResourceFiles\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

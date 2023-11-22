@@ -1,5 +1,8 @@
 ﻿@page "/dashboard"
+@using Client.Service.Appointment
+@using Syncfusion.Blazor.Charts
 <title>Dashboard</title>
+@inject IAppointmentService appointmentService
 
 <ContentMain>
    
@@ -88,7 +91,79 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
-    
+            @if (appointmentService.Appointmentlist == null)
+            {
+                <div class="spin-row">
+                    <SfSpinner Size="40" Label="Loading..." Type="SpinnerType.Bootstrap4" Visible="true"></SfSpinner>
+                </div>
+            }
+            else
+            {
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 dashboard-control">
+                        <div class="e-card grid-container">
+                            <div class="e-card-header">
+                                <div class="e-card-header-caption">
+                                    <div class="e-card-header-title">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <span class="label-text"> Today's Appointments</span>
+
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <a href="schedule">Book Appointments</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="e-card-content">
+
+                                <SfGrid id="Grid" DataSource="@appointmentService.Appointmentlist" Height="160px">
+                                    <GridColumns>
+                                        @* <GridColumn Field="@nameof(AppointmentModel.starDateTime)" HeaderText="Time" TextAlign="@TextAlign.Left" Width="80"></GridColumn> *@
+                                        <GridColumn Field="@nameof(AppointmentModel.Name)" HeaderText="Name" Width="120"></GridColumn>
+
+                                        @* <GridColumn Field="Symptoms" HeaderText="Symptoms" TextAlign="@TextAlign.Left" Width="150"></GridColumn> *@
+                                    </GridColumns>
+                                </SfGrid>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 dashboard-control">
+                    <div class="e-card chart-container">
+                        <div class="e-card-content">
+                          @*   <SfChart Height="340px" Width="100%" Title="Consultation">
+                                <ChartArea><ChartAreaBorder Width="0"></ChartAreaBorder></ChartArea>
+                                <ChartTitleStyle TextAlignment="@Alignment.Near"></ChartTitleStyle>
+                                <ChartPrimaryXAxis Title="Date" ValueType="Syncfusion.Blazor.Charts.ValueType.DateTime" Interval="1" IntervalType="@IntervalType.Days" LabelFormat="MM/dd" Minimum="@firstDayOfWeek" Maximum="@max" EdgeLabelPlacement="@EdgeLabelPlacement.Shift">
+                                    <ChartAxisMajorGridLines Width="0"></ChartAxisMajorGridLines>
+                                    <ChartAxisMinorGridLines Width="0"></ChartAxisMinorGridLines>
+                                    <ChartAxisMajorTickLines Width="0"></ChartAxisMajorTickLines>
+                                </ChartPrimaryXAxis>
+                                <ChartPrimaryYAxis Title="Patient" Minimum="0" Maximum="6" Interval="2"></ChartPrimaryYAxis>
+                                <ChartLegendSettings Visible="true" Position="@LegendPosition.Top" Padding="20"></ChartLegendSettings>
+                                <ChartSeriesCollection>
+                                    <ChartSeries DataSource="@chartData" Type="Syncfusion.Blazor.Charts.ChartSeriesType.Spline" Width="2" XName="Date" YName="EventCount"
+                                                 Name="Diabetology" LegendShape="Syncfusion.Blazor.Charts.LegendShape.Circle" Fill="#60F238">
+                                    </ChartSeries>
+                                    <ChartSeries DataSource="@chartData1" Type="Syncfusion.Blazor.Charts.ChartSeriesType.Spline" Width="2" XName="Date" YName="EventCount"
+                                                 Name="Orthopaedics" LegendShape="Syncfusion.Blazor.Charts.LegendShape.Circle" Fill="#388CF5">
+                                    </ChartSeries>
+                                    <ChartSeries DataSource="@chartData2" Type="Syncfusion.Blazor.Charts.ChartSeriesType.Spline" Width="2" XName="Date" YName="EventCount"
+                                                 Name="Cardiology" LegendShape="Syncfusion.Blazor.Charts.LegendShape.Circle" Fill="#F29438">
+                                    </ChartSeries>
+                                </ChartSeriesCollection>
+                            </SfChart> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

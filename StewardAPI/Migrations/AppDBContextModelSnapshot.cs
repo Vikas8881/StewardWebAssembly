@@ -152,12 +152,12 @@ namespace StewardAPI.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "fdb63afc-5a39-475c-abe4-6ecd4d975ed4",
+                            UserId = "86020c2c-5a21-4851-a1aa-e69711d77fb1",
                             RoleId = "ba4026c4-1f90-478d-9b0f-dbee61cdb2cc"
                         },
                         new
                         {
-                            UserId = "72682698-c4de-45eb-87eb-07ddf82c12e9",
+                            UserId = "029a2a1b-34b1-4b37-bc52-2acc5686c59d",
                             RoleId = "de4ccc9c-2743-4c14-aa50-394d66c3b17b"
                         });
                 });
@@ -179,6 +179,79 @@ namespace StewardAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Model.AppointmentModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AppointmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Disease")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DoctorID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ElementType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("IsAllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecurrenceException")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RecurrenceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecurrenceRule")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Symptoms")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hospitalID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Model.CityList", b =>
@@ -456,7 +529,7 @@ namespace StewardAPI.Migrations
                     b.Property<int?>("Pid")
                         .HasColumnType("int");
 
-                    b.Property<int>("Uhid")
+                    b.Property<int?>("Uhid")
                         .HasColumnType("int");
 
                     b.Property<string>("duration")
@@ -653,9 +726,9 @@ namespace StewardAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "72682698-c4de-45eb-87eb-07ddf82c12e9",
+                            Id = "029a2a1b-34b1-4b37-bc52-2acc5686c59d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d52caca1-3180-4aee-8397-84ae3c7b5c07",
+                            ConcurrencyStamp = "449f93c2-d9de-4479-8b96-7a7758dc9e78",
                             Email = "vikasmalik8881@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Vikas",
@@ -664,17 +737,17 @@ namespace StewardAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "VIKASMALIK8881@GMAIL.COM",
                             NormalizedUserName = "VIKASMALIK8881@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHe1ml7i7PldW+4EZgPS9prscxkNskfqILXkgvpAL9mRgBTsyM9yXO6Q8yfUR2nN3A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK9SxysWuxICIdOGbB1GTGEQLjIYZkROmV14dbEBdB5DdoththK7frqa2dwUSZ9idA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "79d6d630-8f4f-4972-a764-6e619b8ac069",
+                            SecurityStamp = "54ffe493-0294-4a57-839e-62144ef44d65",
                             TwoFactorEnabled = false,
                             UserName = "vikasmalik8881@gmail.com"
                         },
                         new
                         {
-                            Id = "fdb63afc-5a39-475c-abe4-6ecd4d975ed4",
+                            Id = "86020c2c-5a21-4851-a1aa-e69711d77fb1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "69feae26-601e-43e6-ace2-7ac01ae657fa",
+                            ConcurrencyStamp = "15146e6a-da4f-4785-b0d4-02c297aaafa7",
                             Email = "Vmalik@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Vikas",
@@ -683,9 +756,9 @@ namespace StewardAPI.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "VMALIK@GMAIL.COM",
                             NormalizedUserName = "VMALIK@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBW9Kcj0kEwx5P5uLfucTyGUx1ywpYTnr1VXIno9rS/j4W7H7UNE0GpOc08nMwJSzA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJn4rHF4bLVeS8DLbdMdjpwJScRrg/eF4R5CzCQASEPF7fVMlv/iesLdiT+k4n4r3g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c6343c56-90f9-4c26-825b-0a71a23baa78",
+                            SecurityStamp = "c72c3cbb-4695-4850-b4f5-77ccaa3f7755",
                             TwoFactorEnabled = false,
                             UserName = "Vmalik@gmail.com"
                         });

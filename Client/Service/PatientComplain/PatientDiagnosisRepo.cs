@@ -17,5 +17,11 @@ namespace Client.Service.PatientComplain
             var newPatient = (await result.Content.ReadFromJsonAsync<ServiceResponse<pDignosis>>()).Data;
             return newPatient;
         }
+
+        public async Task<ServiceResponse<List<GenDignosis>>> GetDiagnosis(int ID)
+        {
+            var result = await _httpClient.GetFromJsonAsync<ServiceResponse<List<GenDignosis>>>($"PatientComplaint/getDiagnosis?PID={ID}");
+            return result;
+        }
     }
 }
